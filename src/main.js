@@ -4,7 +4,7 @@ import Dot from './Dot'
 import { generateColors } from './colors'
 
 export default class Visualizer {
-    constructor(canvas, audioUrl, smoothing = 0.2) {
+    constructor(canvas, audioUrl, smoothing = 0.1) {
         this.canvas = canvas
         this.audioUrl = audioUrl
         this.audioBuffer = null
@@ -92,8 +92,11 @@ export default class Visualizer {
         let x = 0
 
         for (let i = 0; i < bufferLength; i = i + 6) {
-            const percent = -data[i] / 256
-            const y = (percent * this.canvasSize.height) / 2
+            const percent = (data[i] + 180) / 180
+            // if (i === 6 * 150) {
+            //     console.log(percent, data[i], 180)
+            // }
+            const y = this.canvasSize.height - percent * this.canvasSize.height
             this.#drawdot(x, y, this.dotSize, '#ffffff')
             this.dots.push(new Dot(x, y, this.dotSize, this.dotsTime, this.colors))
 
